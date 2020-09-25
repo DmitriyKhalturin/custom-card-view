@@ -15,9 +15,9 @@
 -->
 <resources>
 
-    <!-- On API v23+ we can use the platform provided floating background color -->
-    <style name="CardView" parent="Base.CardView">
-        <item name="cardBackgroundColor">?android:attr/colorBackgroundFloating</item>
-    </style>
+  <!-- On API v23+ we can use the platform provided floating background color -->
+  <style name="CardView" parent="Base.CardView">
+    <item name="cardBackgroundColor">?android:attr/colorBackgroundFloating</item>
+  </style>
 
 </resources>

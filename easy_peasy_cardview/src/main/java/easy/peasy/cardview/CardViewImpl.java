@@ -24,34 +24,34 @@ import androidx.annotation.Nullable;
  * Interface for platform specific CardView implementations.
  */
 interface CardViewImpl {
-    void initialize(CardViewDelegate cardView, Context context, ColorStateList backgroundColor,
-            float radius, float elevation, float maxElevation);
+  void initialize(CardViewDelegate cardView, Context context, ColorStateList backgroundColor,
+                  float radius, float elevation, float maxElevation, int startShadowColor, int endShadowColor);
 
-    void setRadius(CardViewDelegate cardView, float radius);
+  void setRadius(CardViewDelegate cardView, float radius);
 
-    float getRadius(CardViewDelegate cardView);
+  float getRadius(CardViewDelegate cardView);
 
-    void setElevation(CardViewDelegate cardView, float elevation);
+  void setElevation(CardViewDelegate cardView, float elevation);
 
-    float getElevation(CardViewDelegate cardView);
+  float getElevation(CardViewDelegate cardView);
 
-    void initStatic();
+  void initStatic();
 
-    void setMaxElevation(CardViewDelegate cardView, float maxElevation);
+  void setMaxElevation(CardViewDelegate cardView, float maxElevation);
 
-    float getMaxElevation(CardViewDelegate cardView);
+  float getMaxElevation(CardViewDelegate cardView);
 
-    float getMinWidth(CardViewDelegate cardView);
+  float getMinWidth(CardViewDelegate cardView);
 
-    float getMinHeight(CardViewDelegate cardView);
+  float getMinHeight(CardViewDelegate cardView);
 
-    void updatePadding(CardViewDelegate cardView);
+  void updatePadding(CardViewDelegate cardView);
 
-    void onCompatPaddingChanged(CardViewDelegate cardView);
+  void onCompatPaddingChanged(CardViewDelegate cardView);
 
-    void onPreventCornerOverlapChanged(CardViewDelegate cardView);
+  void onPreventCornerOverlapChanged(CardViewDelegate cardView);
 
-    void setBackgroundColor(CardViewDelegate cardView, @Nullable ColorStateList color);
+  void setBackgroundColor(CardViewDelegate cardView, @Nullable ColorStateList color);
 
-    ColorStateList getBackgroundColor(CardViewDelegate cardView);
+  ColorStateList getBackgroundColor(CardViewDelegate cardView);
 }
