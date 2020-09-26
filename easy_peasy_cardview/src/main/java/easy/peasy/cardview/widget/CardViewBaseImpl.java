@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package easy.peasy.cardview;
+package easy.peasy.cardview.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -80,9 +80,9 @@ class CardViewBaseImpl implements CardViewImpl {
   @Override
   public void initialize(CardViewDelegate cardView, Context context,
                          ColorStateList backgroundColor, float radius, float elevation, float maxElevation,
-                         int startShadowColor, int endShadowColor) {
+                         int shadowStartColor, int shadowEndColor) {
     RoundRectDrawableWithShadow background = createBackground(context, backgroundColor, radius,
-      elevation, maxElevation, startShadowColor, endShadowColor);
+      elevation, maxElevation, shadowStartColor, shadowEndColor);
     background.setAddPaddingForCorners(cardView.getPreventCornerOverlap());
     cardView.setCardBackground(background);
     updatePadding(cardView);
@@ -90,9 +90,9 @@ class CardViewBaseImpl implements CardViewImpl {
 
   private RoundRectDrawableWithShadow createBackground(Context context,
                                                        ColorStateList backgroundColor, float radius, float elevation,
-                                                       float maxElevation, int startShadowColor, int endShadowColor) {
+                                                       float maxElevation, int shadowStartColor, int shadowEndColor) {
     return new RoundRectDrawableWithShadow(context.getResources(), backgroundColor, radius,
-      elevation, maxElevation, startShadowColor, endShadowColor);
+      elevation, maxElevation, shadowStartColor, shadowEndColor);
   }
 
   @Override

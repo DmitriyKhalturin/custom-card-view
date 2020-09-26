@@ -20,6 +20,14 @@
   <declare-styleable name="CardView">
     <!-- Background color for CardView. -->
     <attr name="cardBackgroundColor" format="color" />
+    <!-- Background start color for CardView with gradient from left to right. -->
+    <attr name="cardBackgroundStartColor" format="color" />
+    <!-- Background end color for CardView with gradient from left to right. -->
+    <attr name="cardBackgroundEndColor" format="color" />
+    <!-- Shadow start color for CardView. -->
+    <attr name="cardShadowStartColor" format="color" />
+    <!-- Shadow end color for CardView. -->
+    <attr name="cardShadowEndColor" format="color" />
     <!-- Corner radius for CardView. -->
     <attr name="cardCornerRadius" format="dimension" />
     <!-- Elevation for CardView. -->
@@ -44,9 +52,5 @@
     <attr name="android:minWidth" />
     <!-- Workaround to read user defined minimum height -->
     <attr name="android:minHeight" />
-    <!-- Start shadow color. -->
-    <attr name="startShadowColor" format="color" />
-    <!-- End shadow color. -->
-    <attr name="endShadowColor" format="color" />
   </declare-styleable>
 </resources>

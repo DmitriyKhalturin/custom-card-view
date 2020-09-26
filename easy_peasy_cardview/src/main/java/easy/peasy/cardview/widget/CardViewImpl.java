@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package easy.peasy.cardview;
+package easy.peasy.cardview.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -25,7 +25,7 @@ import androidx.annotation.Nullable;
  */
 interface CardViewImpl {
   void initialize(CardViewDelegate cardView, Context context, ColorStateList backgroundColor,
-                  float radius, float elevation, float maxElevation, int startShadowColor, int endShadowColor);
+                  float radius, float elevation, float maxElevation, int shadowStartColor, int shadowEndColor);
 
   void setRadius(CardViewDelegate cardView, float radius);
 

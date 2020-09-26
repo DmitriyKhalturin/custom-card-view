@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package easy.peasy.cardview;
+package easy.peasy.cardview.widget;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -22,7 +22,7 @@ import android.graphics.RectF;
 import androidx.annotation.RequiresApi;
 
 @RequiresApi(17)
-class CardViewApi17Impl extends CardViewBaseImpl {
+class CardViewApiLollipopImpl extends CardViewBaseImpl {
 
   @Override
   public void initStatic() {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package easy.peasy.cardview;
+package easy.peasy.cardview.widget;
 
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -31,6 +31,8 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Nullable;
+
+import easy.peasy.cardview.R;
 
 /**
  * A rounded rectangle drawable which also includes a shadow around.
@@ -88,14 +90,14 @@ class RoundRectDrawableWithShadow extends Drawable {
   private boolean mPrintedShadowClipWarning = false;
 
   RoundRectDrawableWithShadow(Resources resources, ColorStateList backgroundColor, float radius,
-                              float shadowSize, float maxShadowSize, int startShadowColor, int endShadowColor) {
-    if (startShadowColor != 0) {
-      mShadowStartColor = startShadowColor;
+                              float shadowSize, float maxShadowSize, int shadowStartColor, int shadowEndColor) {
+    if (shadowStartColor != 0) {
+      mShadowStartColor = shadowStartColor;
     } else {
       mShadowStartColor = resources.getColor(R.color.cardview_shadow_start_color);
     }
-    if (endShadowColor != 0) {
-      mShadowEndColor = endShadowColor;
+    if (shadowEndColor != 0) {
+      mShadowEndColor = shadowEndColor;
     } else {
       mShadowEndColor = resources.getColor(R.color.cardview_shadow_end_color);
     }

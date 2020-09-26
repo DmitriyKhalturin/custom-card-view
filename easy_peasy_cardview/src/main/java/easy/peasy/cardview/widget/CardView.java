@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package easy.peasy.cardview;
+package easy.peasy.cardview.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
+
+import easy.peasy.cardview.R;
 
 /**
  * A FrameLayout with a rounded corner background and shadow.
@@ -78,20 +80,12 @@ import androidx.core.view.ViewCompat;
  */
 public class CardView extends FrameLayout {
 
-  private static final int[] COLOR_BACKGROUND_ATTR = {android.R.attr.colorBackground};
-  private static final CardViewImpl IMPL;
+  private static final int[] COLOR_RIPPLE_ATTR = {android.R.attr.colorControlHighlight};
+  private static final CardViewImpl cardView;
 
   static {
-        /*if (Build.VERSION.SDK_INT >= 21) {
-            IMPL = new CardViewApi21Impl();
-        } else*/
-
-    if (Build.VERSION.SDK_INT >= 17) {
-      IMPL = new CardViewApi17Impl();
-    } else {
-      IMPL = new CardViewBaseImpl();
-    }
-    IMPL.initStatic();
+    cardView = new CardViewApiLollipopImpl();
+    cardView.initStatic();
   }
 
   private boolean mCompatPadding;
@@ -126,22 +120,7 @@ public class CardView extends FrameLayout {
       R.style.CardView);
     ViewCompat.saveAttributeDataForStyleable(this,
       context, R.styleable.CardView, attrs, a, defStyleAttr, R.style.CardView);
-    ColorStateList backgroundColor;
-    if (a.hasValue(R.styleable.CardView_cardBackgroundColor)) {
-      backgroundColor = a.getColorStateList(R.styleable.CardView_cardBackgroundColor);
-    } else {
-      // There isn't one set, so we'll compute one based on the theme
-      final TypedArray aa = getContext().obtainStyledAttributes(COLOR_BACKGROUND_ATTR);
-      final int themeColorBackground = aa.getColor(0, 0);
-      aa.recycle();
-
-      // If the theme colorBackground is light, use our own light color, otherwise dark
-      final float[] hsv = new float[3];
-      Color.colorToHSV(themeColorBackground, hsv);
-      backgroundColor = ColorStateList.valueOf(hsv[2] > 0.5f
-        ? getResources().getColor(R.color.cardview_light_background)
-        : getResources().getColor(R.color.cardview_dark_background));
-    }
+    ColorStateList backgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, android.R.color.white));
     float radius = a.getDimension(R.styleable.CardView_cardCornerRadius, 0);
     float elevation = a.getDimension(R.styleable.CardView_cardElevation, 0);
     float maxElevation = a.getDimension(R.styleable.CardView_cardMaxElevation, 0);
@@ -161,12 +140,33 @@ public class CardView extends FrameLayout {
     }
     mUserSetMinWidth = a.getDimensionPixelSize(R.styleable.CardView_android_minWidth, 0);
     mUserSetMinHeight = a.getDimensionPixelSize(R.styleable.CardView_android_minHeight, 0);
-    int startShadowColor = a.getColor(R.styleable.CardView_startShadowColor, 0);
-    int endShadowColor = a.getColor(R.styleable.CardView_endShadowColor, 0);
+    int shadowStartColor = a.getColor(R.styleable.CardView_cardShadowStartColor, 0);
+    int shadowEndColor = a.getColor(R.styleable.CardView_cardShadowEndColor, 0);
+    final TypedArray aa = getContext().obtainStyledAttributes(COLOR_RIPPLE_ATTR);
+    final int rippleColor = aa.getColor(0, 0);
+    aa.recycle();
+    CardViewDrawable cardViewDrawable = null;
+    if (a.hasValue(R.styleable.CardView_cardBackgroundStartColor) && a.hasValue(R.styleable.CardView_cardBackgroundEndColor)){
+      int startColor = a.getColor(R.styleable.CardView_cardBackgroundStartColor, 0);
+      int endColor = a.getColor(R.styleable.CardView_cardBackgroundEndColor, 0);
+      cardViewDrawable = new CardViewDrawable(startColor, endColor, radius, rippleColor);
+    } else if (a.hasValue(R.styleable.CardView_cardBackgroundColor)) {
+      int color = a.getColor(R.styleable.CardView_cardBackgroundColor, 0);
+      cardViewDrawable = new CardViewDrawable(color, radius, rippleColor);
+    }
     a.recycle();
 
-    IMPL.initialize(mCardViewDelegate, context, backgroundColor, radius,
-      elevation, maxElevation, startShadowColor, endShadowColor);
+    cardView.initialize(mCardViewDelegate, context, backgroundColor, radius,
+      elevation, maxElevation, shadowStartColor, shadowEndColor);
+
+    if (cardViewDrawable != null) {
+      FrameLayout frame = new FrameLayout(context);
+      FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+      );
+      frame.setBackground(cardViewDrawable.getDrawable());
+      super.addView(frame, params);
+    }
   }
 
   @Override
@@ -208,7 +208,7 @@ public class CardView extends FrameLayout {
   public void setUseCompatPadding(boolean useCompatPadding) {
     if (mCompatPadding != useCompatPadding) {
       mCompatPadding = useCompatPadding;
-      IMPL.onCompatPaddingChanged(mCardViewDelegate);
+      cardView.onCompatPaddingChanged(mCardViewDelegate);
     }
   }
 
@@ -230,41 +230,38 @@ public class CardView extends FrameLayout {
    */
   public void setContentPadding(@Px int left, @Px int top, @Px int right, @Px int bottom) {
     mContentPadding.set(left, top, right, bottom);
-    IMPL.updatePadding(mCardViewDelegate);
+    cardView.updatePadding(mCardViewDelegate);
   }
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    if (!(IMPL instanceof CardViewApi21Impl)) {
-      final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-      switch (widthMode) {
-        case MeasureSpec.EXACTLY:
-        case MeasureSpec.AT_MOST:
-          final int minWidth = (int) Math.ceil(IMPL.getMinWidth(mCardViewDelegate));
-          widthMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minWidth,
-            MeasureSpec.getSize(widthMeasureSpec)), widthMode);
-          break;
-        case MeasureSpec.UNSPECIFIED:
-          // Do nothing
-          break;
-      }
-
-      final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-      switch (heightMode) {
-        case MeasureSpec.EXACTLY:
-        case MeasureSpec.AT_MOST:
-          final int minHeight = (int) Math.ceil(IMPL.getMinHeight(mCardViewDelegate));
-          heightMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minHeight,
-            MeasureSpec.getSize(heightMeasureSpec)), heightMode);
-          break;
-        case MeasureSpec.UNSPECIFIED:
-          // Do nothing
-          break;
-      }
-      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    } else {
-      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+    switch (widthMode) {
+      case MeasureSpec.EXACTLY:
+      case MeasureSpec.AT_MOST:
+        final int minWidth = (int) Math.ceil(cardView.getMinWidth(mCardViewDelegate));
+        widthMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minWidth,
+          MeasureSpec.getSize(widthMeasureSpec)), widthMode);
+        break;
+      case MeasureSpec.UNSPECIFIED:
+        // Do nothing
+        break;
     }
+
+    final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+    switch (heightMode) {
+      case MeasureSpec.EXACTLY:
+      case MeasureSpec.AT_MOST:
+        final int minHeight = (int) Math.ceil(cardView.getMinHeight(mCardViewDelegate));
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minHeight,
+          MeasureSpec.getSize(heightMeasureSpec)), heightMode);
+        break;
+      case MeasureSpec.UNSPECIFIED:
+        // Do nothing
+        break;
+    }
+
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 
   @Override
@@ -286,7 +283,7 @@ public class CardView extends FrameLayout {
    * {@link R.attr#cardBackgroundColor}
    */
   public void setCardBackgroundColor(@ColorInt int color) {
-    IMPL.setBackgroundColor(mCardViewDelegate, ColorStateList.valueOf(color));
+    cardView.setBackgroundColor(mCardViewDelegate, ColorStateList.valueOf(color));
   }
 
   /**
@@ -296,7 +293,7 @@ public class CardView extends FrameLayout {
    * {@link R.attr#cardBackgroundColor}
    */
   public void setCardBackgroundColor(@Nullable ColorStateList color) {
-    IMPL.setBackgroundColor(mCardViewDelegate, color);
+    cardView.setBackgroundColor(mCardViewDelegate, color);
   }
 
   /**
@@ -306,7 +303,7 @@ public class CardView extends FrameLayout {
    */
   @NonNull
   public ColorStateList getCardBackgroundColor() {
-    return IMPL.getBackgroundColor(mCardViewDelegate);
+    return cardView.getBackgroundColor(mCardViewDelegate);
   }
 
   /**
@@ -357,7 +354,7 @@ public class CardView extends FrameLayout {
    * @see #setRadius(float)
    */
   public void setRadius(float radius) {
-    IMPL.setRadius(mCardViewDelegate, radius);
+    cardView.setRadius(mCardViewDelegate, radius);
   }
 
   /**
@@ -367,7 +364,7 @@ public class CardView extends FrameLayout {
    * @see #getRadius()
    */
   public float getRadius() {
-    return IMPL.getRadius(mCardViewDelegate);
+    return cardView.getRadius(mCardViewDelegate);
   }
 
   /**
@@ -379,7 +376,7 @@ public class CardView extends FrameLayout {
    * @see #setMaxCardElevation(float)
    */
   public void setCardElevation(float elevation) {
-    IMPL.setElevation(mCardViewDelegate, elevation);
+    cardView.setElevation(mCardViewDelegate, elevation);
   }
 
   /**
@@ -390,7 +387,7 @@ public class CardView extends FrameLayout {
    * @see #getMaxCardElevation()
    */
   public float getCardElevation() {
-    return IMPL.getElevation(mCardViewDelegate);
+    return cardView.getElevation(mCardViewDelegate);
   }
 
   /**
@@ -405,7 +402,7 @@ public class CardView extends FrameLayout {
    * @see #getMaxCardElevation()
    */
   public void setMaxCardElevation(float maxElevation) {
-    IMPL.setMaxElevation(mCardViewDelegate, maxElevation);
+    cardView.setMaxElevation(mCardViewDelegate, maxElevation);
   }
 
   /**
@@ -416,7 +413,7 @@ public class CardView extends FrameLayout {
    * @see #getCardElevation()
    */
   public float getMaxCardElevation() {
-    return IMPL.getMaxElevation(mCardViewDelegate);
+    return cardView.getMaxElevation(mCardViewDelegate);
   }
 
   /**
@@ -446,8 +443,33 @@ public class CardView extends FrameLayout {
   public void setPreventCornerOverlap(boolean preventCornerOverlap) {
     if (preventCornerOverlap != mPreventCornerOverlap) {
       mPreventCornerOverlap = preventCornerOverlap;
-      IMPL.onPreventCornerOverlapChanged(mCardViewDelegate);
+      cardView.onPreventCornerOverlapChanged(mCardViewDelegate);
     }
+  }
+
+  @Override
+  public void addView(View child) {
+    super.addView(child);
+  }
+
+  @Override
+  public void addView(View child, int index) {
+    super.addView(child, index);
+  }
+
+  @Override
+  public void addView(View child, int width, int height) {
+    super.addView(child, width, height);
+  }
+
+  @Override
+  public void addView(View child, ViewGroup.LayoutParams params) {
+    super.addView(child, params);
+  }
+
+  @Override
+  public void addView(View child, int index, ViewGroup.LayoutParams params) {
+    super.addView(child, index, params);
   }
 
   private final CardViewDelegate mCardViewDelegate = new CardViewDelegate() {
@@ -456,7 +478,7 @@ public class CardView extends FrameLayout {
     @Override
     public void setCardBackground(Drawable drawable) {
       mCardBackground = drawable;
-      setBackgroundDrawable(drawable);
+      setBackground(drawable);
     }
 
     @Override
