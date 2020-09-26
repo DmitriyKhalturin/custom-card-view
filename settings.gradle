@@ -1,2 +1,2 @@
 include ':app'
-include ':easy_peasy_cardview'
+include ':customcardview'
