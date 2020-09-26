@@ -255,15 +255,16 @@ class RoundRectDrawableWithShadow extends Drawable {
   }
 
   private void drawShadow(Canvas canvas) {
-    final int dX = 75;
+    final int dX = 25;
     final float edgeShadowTop = -mCornerRadius - mShadowSize;
     final float inset = mCornerRadius + mInsetShadow + mRawShadowSize / 2;
-    final boolean drawHorizontalEdges = mCardBounds.width() - 2 * inset > 0;
+    final boolean drawHorizontalEdges = - 2 * dX + mCardBounds.width() - 2 * inset > 0;
     // RB
     int saved = canvas.save();
     canvas.translate(- dX + mCardBounds.right - inset, mCardBounds.bottom - inset);
     canvas.rotate(180f);
     canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+    // B
     if (drawHorizontalEdges) {
       canvas.drawRect(
         0,
