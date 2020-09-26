@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">EasyPeasy - CardView - Example</string>
+  <string name="button">Press me!</string>
 </resources>
