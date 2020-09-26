@@ -22,7 +22,6 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -43,7 +42,7 @@ import easy.peasy.cardview.R;
  * <p>
  * Due to expensive nature of rounded corner clipping, on platforms before Lollipop, CardView does
  * not clip its children that intersect with rounded corners. Instead, it adds padding to avoid such
- * intersection (See {@link #setPreventCornerOverlap(boolean)} to change this behavior).
+ * intersection.
  * <p>
  * Before Lollipop, CardView adds padding to its content and draws shadows to that area. This
  * padding amount is equal to <code>maxCardElevation + (1 - cos45) * cornerRadius</code> on the
@@ -56,9 +55,7 @@ import easy.peasy.cardview.R;
  * <p>
  * Note that, if you specify exact dimensions for the CardView, because of the shadows, its content
  * area will be different between platforms before Lollipop and after Lollipop. By using api version
- * specific resource values, you can avoid these changes. Alternatively, If you want CardView to add
- * inner padding on platforms Lollipop and after as well, you can call
- * {@link #setUseCompatPadding(boolean)} and pass <code>true</code>.
+ * specific resource values, you can avoid these changes.
  * <p>
  * To change CardView's elevation in a backward compatible way, use
  * {@link #setCardElevation(float)}. CardView will use elevation API on Lollipop and before
@@ -70,8 +67,6 @@ import easy.peasy.cardview.R;
  * {@link R.attr#cardCornerRadius}
  * {@link R.attr#cardElevation}
  * {@link R.attr#cardMaxElevation}
- * {@link R.attr#cardUseCompatPadding}
- * {@link R.attr#cardPreventCornerOverlap}
  * {@link R.attr#contentPadding}
  * {@link R.attr#contentPaddingLeft}
  * {@link R.attr#contentPaddingTop}
@@ -87,10 +82,6 @@ public class CardView extends FrameLayout {
     cardView = new CardViewApiLollipopImpl();
     cardView.initStatic();
   }
-
-  private boolean mCompatPadding;
-
-  private boolean mPreventCornerOverlap;
 
   /**
    * CardView requires to have a particular minimum size to draw shadows before API 21. If
@@ -124,8 +115,6 @@ public class CardView extends FrameLayout {
     float radius = a.getDimension(R.styleable.CardView_cardCornerRadius, 0);
     float elevation = a.getDimension(R.styleable.CardView_cardElevation, 0);
     float maxElevation = a.getDimension(R.styleable.CardView_cardMaxElevation, 0);
-    mCompatPadding = a.getBoolean(R.styleable.CardView_cardUseCompatPadding, false);
-    mPreventCornerOverlap = a.getBoolean(R.styleable.CardView_cardPreventCornerOverlap, true);
     int defaultPadding = a.getDimensionPixelSize(R.styleable.CardView_contentPadding, 0);
     mContentPadding.left = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingLeft,
       defaultPadding);
@@ -159,14 +148,14 @@ public class CardView extends FrameLayout {
     cardView.initialize(mCardViewDelegate, context, backgroundColor, radius,
       elevation, maxElevation, shadowStartColor, shadowEndColor);
 
+    FrameLayout layout = new FrameLayout(context);
+    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+      ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+    );
     if (cardViewDrawable != null) {
-      FrameLayout frame = new FrameLayout(context);
-      FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
-      );
-      frame.setBackground(cardViewDrawable.getDrawable());
-      super.addView(frame, params);
+      layout.setBackground(cardViewDrawable.getDrawable());
     }
+    addView(layout, params);
   }
 
   @Override
@@ -180,43 +169,10 @@ public class CardView extends FrameLayout {
   }
 
   /**
-   * Returns whether CardView will add inner padding on platforms Lollipop and after.
-   *
-   * @return <code>true</code> if CardView adds inner padding on platforms Lollipop and after to
-   * have same dimensions with platforms before Lollipop.
-   */
-  public boolean getUseCompatPadding() {
-    return mCompatPadding;
-  }
-
-  /**
-   * CardView adds additional padding to draw shadows on platforms before Lollipop.
-   * <p>
-   * This may cause Cards to have different sizes between Lollipop and before Lollipop. If you
-   * need to align CardView with other Views, you may need api version specific dimension
-   * resources to account for the changes.
-   * As an alternative, you can set this flag to <code>true</code> and CardView will add the same
-   * padding values on platforms Lollipop and after.
-   * <p>
-   * Since setting this flag to true adds unnecessary gaps in the UI, default value is
-   * <code>false</code>.
-   *
-   * @param useCompatPadding <code>true></code> if CardView should add padding for the shadows on
-   *      platforms Lollipop and above.
-   * {@link R.attr#cardUseCompatPadding}
-   */
-  public void setUseCompatPadding(boolean useCompatPadding) {
-    if (mCompatPadding != useCompatPadding) {
-      mCompatPadding = useCompatPadding;
-      cardView.onCompatPaddingChanged(mCardViewDelegate);
-    }
-  }
-
-  /**
    * Sets the padding between the Card's edges and the children of CardView.
    * <p>
-   * Depending on platform version or {@link #getUseCompatPadding()} settings, CardView may
-   * update these values before calling {@link android.view.View#setPadding(int, int, int, int)}.
+   * Depending on platform version, CardView may update these values before calling
+   * {@link android.view.View#setPadding(int, int, int, int)}.
    *
    * @param left   The left padding in pixels
    * @param top    The top padding in pixels
@@ -393,8 +349,7 @@ public class CardView extends FrameLayout {
   /**
    * Updates the backward compatible maximum elevation of the CardView.
    * <p>
-   * Calling this method has no effect if device OS version is Lollipop or newer and
-   * {@link #getUseCompatPadding()} is <code>false</code>.
+   * Calling this method has no effect if device OS version is Lollipop or newer.
    *
    * @param maxElevation The backward compatible maximum elevation in pixels.
    * {@link R.attr#cardMaxElevation}
@@ -416,62 +371,6 @@ public class CardView extends FrameLayout {
     return cardView.getMaxElevation(mCardViewDelegate);
   }
 
-  /**
-   * Returns whether CardView should add extra padding to content to avoid overlaps with rounded
-   * corners on pre-Lollipop platforms.
-   *
-   * @return True if CardView prevents overlaps with rounded corners on platforms before Lollipop.
-   *         Default value is <code>true</code>.
-   */
-  public boolean getPreventCornerOverlap() {
-    return mPreventCornerOverlap;
-  }
-
-  /**
-   * On pre-Lollipop platforms, CardView does not clip the bounds of the Card for the rounded
-   * corners. Instead, it adds padding to content so that it won't overlap with the rounded
-   * corners. You can disable this behavior by setting this field to <code>false</code>.
-   * <p>
-   * Setting this value on Lollipop and above does not have any effect unless you have enabled
-   * compatibility padding.
-   *
-   * @param preventCornerOverlap Whether CardView should add extra padding to content to avoid
-   *                             overlaps with the CardView corners.
-   * {@link R.attr#cardPreventCornerOverlap}
-   * @see #setUseCompatPadding(boolean)
-   */
-  public void setPreventCornerOverlap(boolean preventCornerOverlap) {
-    if (preventCornerOverlap != mPreventCornerOverlap) {
-      mPreventCornerOverlap = preventCornerOverlap;
-      cardView.onPreventCornerOverlapChanged(mCardViewDelegate);
-    }
-  }
-
-  @Override
-  public void addView(View child) {
-    super.addView(child);
-  }
-
-  @Override
-  public void addView(View child, int index) {
-    super.addView(child, index);
-  }
-
-  @Override
-  public void addView(View child, int width, int height) {
-    super.addView(child, width, height);
-  }
-
-  @Override
-  public void addView(View child, ViewGroup.LayoutParams params) {
-    super.addView(child, params);
-  }
-
-  @Override
-  public void addView(View child, int index, ViewGroup.LayoutParams params) {
-    super.addView(child, index, params);
-  }
-
   private final CardViewDelegate mCardViewDelegate = new CardViewDelegate() {
     private Drawable mCardBackground;
 
@@ -479,16 +378,6 @@ public class CardView extends FrameLayout {
     public void setCardBackground(Drawable drawable) {
       mCardBackground = drawable;
       setBackground(drawable);
-    }
-
-    @Override
-    public boolean getUseCompatPadding() {
-      return CardView.this.getUseCompatPadding();
-    }
-
-    @Override
-    public boolean getPreventCornerOverlap() {
-      return CardView.this.getPreventCornerOverlap();
     }
 
     @Override
@@ -511,11 +400,6 @@ public class CardView extends FrameLayout {
     @Override
     public Drawable getCardBackground() {
       return mCardBackground;
-    }
-
-    @Override
-    public View getCardView() {
-      return CardView.this;
     }
   };
 }

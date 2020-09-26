@@ -47,10 +47,6 @@ interface CardViewImpl {
 
   void updatePadding(CardViewDelegate cardView);
 
-  void onCompatPaddingChanged(CardViewDelegate cardView);
-
-  void onPreventCornerOverlapChanged(CardViewDelegate cardView);
-
   void setBackgroundColor(CardViewDelegate cardView, @Nullable ColorStateList color);
 
   ColorStateList getBackgroundColor(CardViewDelegate cardView);

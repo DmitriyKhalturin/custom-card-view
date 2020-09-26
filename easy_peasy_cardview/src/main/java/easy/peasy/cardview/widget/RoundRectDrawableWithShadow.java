@@ -38,8 +38,6 @@ import easy.peasy.cardview.R;
  * A rounded rectangle drawable which also includes a shadow around.
  */
 class RoundRectDrawableWithShadow extends Drawable {
-  // used to calculate content padding
-  private static final double COS_45 = Math.cos(Math.toRadians(45));
 
   private static final float SHADOW_MULTIPLIER = 1.5f;
 
@@ -81,8 +79,6 @@ class RoundRectDrawableWithShadow extends Drawable {
   private final int mShadowStartColor;
 
   private final int mShadowEndColor;
-
-  private boolean mAddPaddingForCorners = true;
 
   /**
    * If shadow size is set to a value above max shadow, we print a warning
@@ -129,8 +125,7 @@ class RoundRectDrawableWithShadow extends Drawable {
     return i;
   }
 
-  void setAddPaddingForCorners(boolean addPaddingForCorners) {
-    mAddPaddingForCorners = addPaddingForCorners;
+  void setAddPaddingForCorners() {
     invalidateSelf();
   }
 
@@ -176,30 +171,18 @@ class RoundRectDrawableWithShadow extends Drawable {
 
   @Override
   public boolean getPadding(Rect padding) {
-    int vOffset = (int) Math.ceil(calculateVerticalPadding(mRawMaxShadowSize, mCornerRadius,
-      mAddPaddingForCorners));
-    int hOffset = (int) Math.ceil(calculateHorizontalPadding(mRawMaxShadowSize, mCornerRadius,
-      mAddPaddingForCorners));
+    int vOffset = (int) Math.ceil(calculateVerticalPadding(mRawMaxShadowSize, mCornerRadius));
+    int hOffset = (int) Math.ceil(calculateHorizontalPadding(mRawMaxShadowSize, mCornerRadius));
     padding.set(hOffset, vOffset, hOffset, vOffset);
     return true;
   }
 
-  static float calculateVerticalPadding(float maxShadowSize, float cornerRadius,
-                                        boolean addPaddingForCorners) {
-    if (addPaddingForCorners) {
-      return (float) (maxShadowSize * SHADOW_MULTIPLIER + (1 - COS_45) * cornerRadius);
-    } else {
-      return maxShadowSize * SHADOW_MULTIPLIER;
-    }
+  static float calculateVerticalPadding(float maxShadowSize, float cornerRadius) {
+    return maxShadowSize * SHADOW_MULTIPLIER;
   }
 
-  static float calculateHorizontalPadding(float maxShadowSize, float cornerRadius,
-                                          boolean addPaddingForCorners) {
-    if (addPaddingForCorners) {
-      return (float) (maxShadowSize + (1 - COS_45) * cornerRadius);
-    } else {
-      return maxShadowSize;
-    }
+  static float calculateHorizontalPadding(float maxShadowSize, float cornerRadius) {
+    return maxShadowSize;
   }
 
   @Override

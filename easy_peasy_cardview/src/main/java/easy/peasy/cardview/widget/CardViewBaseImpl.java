@@ -83,7 +83,7 @@ class CardViewBaseImpl implements CardViewImpl {
                          int shadowStartColor, int shadowEndColor) {
     RoundRectDrawableWithShadow background = createBackground(context, backgroundColor, radius,
       elevation, maxElevation, shadowStartColor, shadowEndColor);
-    background.setAddPaddingForCorners(cardView.getPreventCornerOverlap());
+    background.setAddPaddingForCorners();
     cardView.setCardBackground(background);
     updatePadding(cardView);
   }
@@ -103,17 +103,6 @@ class CardViewBaseImpl implements CardViewImpl {
       (int) Math.ceil(getMinHeight(cardView)));
     cardView.setShadowPadding(shadowPadding.left, shadowPadding.top,
       shadowPadding.right, shadowPadding.bottom);
-  }
-
-  @Override
-  public void onCompatPaddingChanged(CardViewDelegate cardView) {
-    // NO OP
-  }
-
-  @Override
-  public void onPreventCornerOverlapChanged(CardViewDelegate cardView) {
-    getShadowBackground(cardView).setAddPaddingForCorners(cardView.getPreventCornerOverlap());
-    updatePadding(cardView);
   }
 
   @Override
