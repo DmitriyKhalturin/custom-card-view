@@ -13,6 +13,7 @@ ext {
 
   gitUrl = "https://github.com/dmitriykhalturin/custom-card-view.git"
   siteUrl = "https://github.com/dmitriykhalturin/custom-card-view"
+  issuesUrl = "https://github.com/dmitriykhalturin/custom-card-view/issues"
 
   licenseName = "Apache License 2.0"
   licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.txt"
@@ -50,4 +51,4 @@ repositories {
 }
 
 
-apply from: "bintray.gradle"
+apply from: "https://raw.githubusercontent.com/dmitriykhalturin/bintray-gradle-config/master/bintray.gradle"
