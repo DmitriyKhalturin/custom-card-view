@@ -25,7 +25,7 @@ Next add a dependency in the build.gradle file of your app module. The following
 
 ```groovy
 dependencies {
-    implementation "com.github.dmitriykhalturin:customcardview:1.0.0"
+    implementation "com.github.dmitriykhalturin:customcardview:${latestVersion}"
 }
 ```
 
