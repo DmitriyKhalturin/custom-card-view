@@ -1,5 +1,5 @@
 # Custom CardView
-[ ![Download](https://api.bintray.com/packages/dmitriykhalturin/easypeasy/customcardview/images/download.svg?version=1.0.0) ](https://bintray.com/dmitriykhalturin/easypeasy/customcardview/1.0.0/link)
+[ ![Download](https://api.bintray.com/packages/dmitriykhalturin/easypeasy/customcardview/images/download.svg) ](https://bintray.com/dmitriykhalturin/easypeasy/customcardview/_latestVersion)
 
 <img src='images/example.png' height='500px'/>
 
@@ -10,13 +10,22 @@
 
 ## Contribute
 
-* Please give feedback an [issue](https://github.com/dmitriykhalturin/custom-card-view/issues) or [pull request](https://github.com/dmitriykhalturin/custom-card-view/pulls) 
+* Please give feedback an [issue](https://github.com/dmitriykhalturin/custom-card-view/issues) or [pull request](https://github.com/dmitriykhalturin/custom-card-view/pulls)
 
 ## Gradle
 
+You need to make sure you have the JCenter repository included in the build.gradle file in the root of your project:
+```groovy
+repositories {
+    jcenter()
+}
 ```
+
+Next add a dependency in the build.gradle file of your app module. The following will add a dependency to the library:
+
+```groovy
 dependencies {
-    implementation "com.github.dmitriykhalturin:customcardview:1.0.0"
+    implementation "com.github.dmitriykhalturin:customcardview:${latestVersion}"
 }
 ```
 

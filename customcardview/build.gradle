@@ -9,7 +9,7 @@ ext {
 
   libraryName = "CustomCardView"
   libraryDescription = "Custom CardView design. Specific shadow."
-  libraryVersion = "1.0.1"
+  libraryVersion = "1.0.2"
 
   gitUrl = "https://github.com/dmitriykhalturin/custom-card-view.git"
   siteUrl = "https://github.com/dmitriykhalturin/custom-card-view"
@@ -41,7 +41,7 @@ android {
 
 dependencies {
   api("androidx.annotation:annotation:1.1.0")
-  implementation("androidx.core:core:1.3.1")
+  implementation("androidx.core:core:1.3.2")
 }
 
 repositories {

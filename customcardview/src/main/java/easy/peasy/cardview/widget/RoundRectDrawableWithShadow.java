@@ -41,6 +41,8 @@ class RoundRectDrawableWithShadow extends Drawable {
 
   private static final float SHADOW_MULTIPLIER = 1.5f;
 
+  private static final int SHADOW_OFFSET = 25;
+
   private final int mInsetShadow; // extra shadow to avoid gaps between card and shadow
 
   /*
@@ -238,13 +240,12 @@ class RoundRectDrawableWithShadow extends Drawable {
   }
 
   private void drawShadow(Canvas canvas) {
-    final int dX = 25;
     final float edgeShadowTop = -mCornerRadius - mShadowSize;
     final float inset = mCornerRadius + mInsetShadow + mRawShadowSize / 2;
-    final boolean drawHorizontalEdges = - 2 * dX + mCardBounds.width() - 2 * inset > 0;
+    final boolean drawHorizontalEdges = - 2 * SHADOW_OFFSET + mCardBounds.width() - 2 * inset > 0;
     // RB
     int saved = canvas.save();
-    canvas.translate(- dX + mCardBounds.right - inset, mCardBounds.bottom - inset);
+    canvas.translate(-SHADOW_OFFSET + mCardBounds.right - inset, mCardBounds.bottom - inset);
     canvas.rotate(180f);
     canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
     // B
@@ -252,7 +253,7 @@ class RoundRectDrawableWithShadow extends Drawable {
       canvas.drawRect(
         0,
         edgeShadowTop,
-        - 2 * dX + mCardBounds.width() - 2 * inset,
+        - 2 * SHADOW_OFFSET + mCardBounds.width() - 2 * inset,
         -mCornerRadius + mShadowSize,
         mEdgeShadowPaint
       );
@@ -260,7 +261,7 @@ class RoundRectDrawableWithShadow extends Drawable {
     canvas.restoreToCount(saved);
     // LB
     saved = canvas.save();
-    canvas.translate(dX + mCardBounds.left + inset, mCardBounds.bottom - inset);
+    canvas.translate(SHADOW_OFFSET + mCardBounds.left + inset, mCardBounds.bottom - inset);
     canvas.rotate(270f);
     canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
     canvas.restoreToCount(saved);
@@ -336,14 +337,12 @@ class RoundRectDrawableWithShadow extends Drawable {
   }
 
   float getMinWidth() {
-    final float content = 2
-      * Math.max(mRawMaxShadowSize, mCornerRadius + mInsetShadow + mRawMaxShadowSize / 2);
+    final float content = 2 * Math.max(mRawMaxShadowSize, SHADOW_OFFSET + mCornerRadius + mInsetShadow + mRawMaxShadowSize / 2);
     return content + (mRawMaxShadowSize + mInsetShadow) * 2;
   }
 
   float getMinHeight() {
-    final float content = 2 * Math.max(mRawMaxShadowSize, mCornerRadius + mInsetShadow
-      + mRawMaxShadowSize * SHADOW_MULTIPLIER / 2);
+    final float content = Math.max(mRawMaxShadowSize, mCornerRadius + mInsetShadow + mRawMaxShadowSize * SHADOW_MULTIPLIER / 2);
     return content + (mRawMaxShadowSize * SHADOW_MULTIPLIER + mInsetShadow) * 2;
   }
 

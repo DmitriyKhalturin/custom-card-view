@@ -22,8 +22,10 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -148,14 +150,15 @@ public class CardView extends FrameLayout {
     cardView.initialize(mCardViewDelegate, context, backgroundColor, radius,
       elevation, maxElevation, shadowStartColor, shadowEndColor);
 
-    FrameLayout layout = new FrameLayout(context);
+    View view = new View(context);
     FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
       ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
     );
     if (cardViewDrawable != null) {
-      layout.setBackground(cardViewDrawable.getDrawable());
+      view.setBackground(cardViewDrawable.getDrawable());
     }
-    addView(layout, params);
+    addView(view, params);
+    view.requestLayout();
   }
 
   @Override

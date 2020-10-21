@@ -35,7 +35,7 @@
 
   <easy.peasy.cardview.widget.CardView
     android:id="@+id/cardView0"
-    android:layout_width="110dp"
+    android:layout_width="@dimen/cornerRadius"
     android:layout_height="150dp"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="@dimen/cornerRadius"
@@ -99,7 +99,7 @@
   <easy.peasy.cardview.widget.CardView
     android:id="@+id/cardView4"
     android:layout_width="260dp"
-    android:layout_height="150dp"
+    android:layout_height="@dimen/cornerRadius"
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundEndColor="#F4978E"
@@ -115,10 +115,9 @@
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="top|center"
-      android:layout_marginTop="12dp"
+      android:layout_gravity="center"
       android:text="@string/button"
-      android:textColor="#555B6E"
+      android:textColor="#FFFFFF"
       android:textSize="24sp" />
   </easy.peasy.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
