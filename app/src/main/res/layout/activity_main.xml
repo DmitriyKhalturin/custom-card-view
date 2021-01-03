@@ -8,116 +8,64 @@
   tools:context=".MainActivity">
 
   <easy.peasy.cardview.widget.CardView
-    android:id="@+id/cardView1"
-    android:layout_width="150dp"
-    android:layout_height="150dp"
+    android:id="@+id/cardView_palette1"
+    android:layout_width="240dp"
+    android:layout_height="32dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="@dimen/cornerRadius"
-    app:cardElevation="8dp"
-    app:cardShadowStartColor="#BEE3DB"
-    app:layout_constraintBottom_toTopOf="@+id/cardView3"
-    app:layout_constraintEnd_toStartOf="@+id/cardView0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_chainStyle="spread">
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="@string/number1"
-      android:textColor="#555B6E"
-      android:textSize="24sp"
-      android:textStyle="bold" />
-  </easy.peasy.cardview.widget.CardView>
-
-  <easy.peasy.cardview.widget.CardView
-    android:id="@+id/cardView0"
-    android:layout_width="@dimen/cornerRadius"
-    android:layout_height="150dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="@dimen/cornerRadius"
-    app:cardElevation="8dp"
-    app:cardShadowStartColor="#80000000"
-    app:layout_constraintBottom_toBottomOf="@+id/cardView1"
-    app:layout_constraintEnd_toStartOf="@id/cardView2"
-    app:layout_constraintStart_toEndOf="@id/cardView1"
-    app:layout_constraintTop_toTopOf="@+id/cardView1" />
-
-  <easy.peasy.cardview.widget.CardView
-    android:id="@+id/cardView2"
-    android:layout_width="150dp"
-    android:layout_height="150dp"
-    android:clickable="true"
-    android:focusable="true"
-    app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="@dimen/cornerRadius"
-    app:cardElevation="8dp"
-    app:cardShadowStartColor="#80D87373"
-    app:layout_constraintBottom_toBottomOf="@+id/cardView1"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@id/cardView0"
-    app:layout_constraintTop_toTopOf="@+id/cardView1">
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="@string/number2"
-      android:textColor="#555B6E"
-      android:textSize="24sp"
-      android:textStyle="bold" />
-  </easy.peasy.cardview.widget.CardView>
-
-  <easy.peasy.cardview.widget.CardView
-    android:id="@+id/cardView3"
-    android:layout_width="260dp"
-    android:layout_height="150dp"
-    android:clickable="true"
-    android:focusable="true"
-    app:cardBackgroundEndColor="#89B0AE"
-    app:cardBackgroundStartColor="#BEE3DB"
-    app:cardCornerRadius="@dimen/cornerRadius"
-    app:cardElevation="8dp"
-    app:cardShadowStartColor="#BFFEC89A"
-    app:layout_constraintBottom_toTopOf="@id/cardView4"
+    app:cardBackgroundEndColor="@color/palette1_backgroundEnd"
+    app:cardBackgroundStartColor="@color/palette1_backgroundStart"
+    app:cardCornerRadius="32dp"
+    app:cardElevation="4dp"
+    app:cardShadowStartColor="@color/palette1_shadowStart"
+    app:layout_constraintBottom_toTopOf="@+id/cardView_palette2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/cardView1">
+    app:layout_constraintTop_toTopOf="parent">
 
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:text="@string/button"
-      android:textColor="#FFFFFF"
-      android:textSize="24sp" />
+      android:paddingBottom="2dp"
+      android:text="Sample text"
+      android:textColor="@color/colorPrimaryDark"
+      android:textSize="20sp"
+      tools:ignore="HardcodedText" />
   </easy.peasy.cardview.widget.CardView>
 
   <easy.peasy.cardview.widget.CardView
-    android:id="@+id/cardView4"
-    android:layout_width="260dp"
-    android:layout_height="@dimen/cornerRadius"
+    android:id="@+id/cardView_palette2"
+    android:layout_width="240dp"
+    android:layout_height="160dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundEndColor="#F4978E"
-    app:cardBackgroundStartColor="#FEC89A"
-    app:cardCornerRadius="@dimen/cornerRadius"
+    app:cardBackgroundEndColor="@color/palette2_backgroundEnd"
+    app:cardBackgroundStartColor="@color/palette2_backgroundStart"
+    app:cardCornerRadius="32dp"
+    app:cardCornerRadiusBottomLeft="0dp"
+    app:cardCornerRadiusBottomRight="24dp"
+    app:cardCornerRadiusTopLeft="24dp"
+    app:cardCornerRadiusTopRight="16dp"
     app:cardElevation="8dp"
-    app:cardShadowStartColor="#BFFEC89A"
+    app:cardShadowStartColor="@color/palette2_shadowStart"
+    app:layout_constraintBottom_toTopOf="@+id/cardView_palette3"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/cardView_palette1" />
+
+  <easy.peasy.cardview.widget.CardView
+    android:id="@+id/cardView_palette3"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
+    app:cardCornerRadiusBottomLeft="32dp"
+    app:cardCornerRadiusBottomRight="64dp"
+    app:cardCornerRadiusTopLeft="4dp"
+    app:cardCornerRadiusTopRight="16dp"
+    app:cardElevation="16dp"
+    app:cardShadowStartColor="@color/palette3_shadowStart"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/cardView3">
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="@string/button"
-      android:textColor="#FFFFFF"
-      android:textSize="24sp" />
-  </easy.peasy.cardview.widget.CardView>
+    app:layout_constraintTop_toBottomOf="@id/cardView_palette2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
