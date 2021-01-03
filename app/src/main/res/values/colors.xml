@@ -10,7 +10,5 @@
   <color name="palette2_backgroundStart">#FEC89A</color>
   <color name="palette2_backgroundEnd">#F4978E</color>
   <color name="palette2_shadowStart">#80000000</color>
-  <color name="palette3_backgroundStart">#40A6DAD0</color>
-  <color name="palette3_backgroundEnd">#406AE5D3</color>
-  <color name="palette3_shadowStart">#40000000</color>
+  <color name="palette3_shadowStart">#89B0AE</color>
 </resources>
