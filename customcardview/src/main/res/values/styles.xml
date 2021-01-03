@@ -22,8 +22,7 @@
 
   <!-- On older platforms we do not explicitly set a background color and let CardView compute
        one based on the theme. -->
-  <style name="CardView" parent="Base.CardView">
-  </style>
+  <style name="CardView" parent="Base.CardView" />
 
   <style name="CardView.Light">
     <item name="cardBackgroundColor">@color/cardview_light_background</item>
