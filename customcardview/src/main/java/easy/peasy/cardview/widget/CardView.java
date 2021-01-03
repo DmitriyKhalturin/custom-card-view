@@ -25,7 +25,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -81,7 +80,7 @@ public class CardView extends FrameLayout {
   private static final CardViewImpl cardView;
 
   static {
-    cardView = new CardViewApiLollipopImpl();
+    cardView = new CardViewBaseImpl();
     cardView.initStatic();
   }
 
@@ -115,6 +114,11 @@ public class CardView extends FrameLayout {
       context, R.styleable.CardView, attrs, a, defStyleAttr, R.style.CardView);
     ColorStateList backgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, android.R.color.white));
     float radius = a.getDimension(R.styleable.CardView_cardCornerRadius, 0);
+    float radiusTopLeft = a.getDimension(R.styleable.CardView_cardCornerRadiusTopLeft, 0);
+    float radiusTopRight = a.getDimension(R.styleable.CardView_cardCornerRadiusTopRight, 0);
+    float radiusBottomRight = a.getDimension(R.styleable.CardView_cardCornerRadiusBottomRight, 0);
+    float radiusBottomLeft = a.getDimension(R.styleable.CardView_cardCornerRadiusBottomLeft, 0);
+    CornerRadius cornerRadius = CornerRadius.build(radius, radiusTopLeft, radiusTopRight, radiusBottomRight, radiusBottomLeft);
     float elevation = a.getDimension(R.styleable.CardView_cardElevation, 0);
     float maxElevation = a.getDimension(R.styleable.CardView_cardMaxElevation, 0);
     int defaultPadding = a.getDimensionPixelSize(R.styleable.CardView_contentPadding, 0);
@@ -140,14 +144,14 @@ public class CardView extends FrameLayout {
     if (a.hasValue(R.styleable.CardView_cardBackgroundStartColor) && a.hasValue(R.styleable.CardView_cardBackgroundEndColor)){
       int startColor = a.getColor(R.styleable.CardView_cardBackgroundStartColor, 0);
       int endColor = a.getColor(R.styleable.CardView_cardBackgroundEndColor, 0);
-      cardViewDrawable = new CardViewDrawable(startColor, endColor, radius, rippleColor);
+      cardViewDrawable = new CardViewDrawable(startColor, endColor, cornerRadius, rippleColor);
     } else if (a.hasValue(R.styleable.CardView_cardBackgroundColor)) {
       int color = a.getColor(R.styleable.CardView_cardBackgroundColor, 0);
-      cardViewDrawable = new CardViewDrawable(color, radius, rippleColor);
+      cardViewDrawable = new CardViewDrawable(color, cornerRadius, rippleColor);
     }
     a.recycle();
 
-    cardView.initialize(mCardViewDelegate, context, backgroundColor, radius,
+    cardView.initialize(mCardViewDelegate, context, backgroundColor, cornerRadius,
       elevation, maxElevation, shadowStartColor, shadowEndColor);
 
     View view = new View(context);
@@ -156,6 +160,8 @@ public class CardView extends FrameLayout {
     );
     if (cardViewDrawable != null) {
       view.setBackground(cardViewDrawable.getDrawable());
+    } else {
+      view.setBackgroundResource(android.R.color.white);
     }
     addView(view, params);
     view.requestLayout();
@@ -313,17 +319,28 @@ public class CardView extends FrameLayout {
    * @see #setRadius(float)
    */
   public void setRadius(float radius) {
-    cardView.setRadius(mCardViewDelegate, radius);
+    float[] radii = new float[] {radius, radius, radius, radius};
+    cardView.setCornerRadii(mCardViewDelegate, radii);
+  }
+
+  /**
+   * Updates the corner radii of the CardView.
+   *
+   * @param radii The radii in pixels of the corners of the rectangle shape
+   * @see #setRadii(float[])
+   */
+  public void setRadii(float[] radii) {
+    cardView.setCornerRadii(mCardViewDelegate, radii);
   }
 
   /**
    * Returns the corner radius of the CardView.
    *
-   * @return Corner radius of the CardView
-   * @see #getRadius()
+   * @return Corner radii of the CardView
+   * @see #getRadii()
    */
-  public float getRadius() {
-    return cardView.getRadius(mCardViewDelegate);
+  public float[] getRadii() {
+    return cardView.getCornerRadii(mCardViewDelegate);
   }
 
   /**

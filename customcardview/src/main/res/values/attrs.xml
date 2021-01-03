@@ -30,6 +30,14 @@
     <attr name="cardShadowEndColor" format="color" />
     <!-- Corner radius for CardView. -->
     <attr name="cardCornerRadius" format="dimension" />
+    <!-- Top left angle corner radius for CardView. -->
+    <attr name="cardCornerRadiusTopLeft" format="dimension" />
+    <!-- Top right angle corner radius for CardView. -->
+    <attr name="cardCornerRadiusTopRight" format="dimension" />
+    <!-- Bottom right angle corner radius for CardView. -->
+    <attr name="cardCornerRadiusBottomRight" format="dimension" />
+    <!-- Bottom left angle corner radius for CardView. -->
+    <attr name="cardCornerRadiusBottomLeft" format="dimension" />
     <!-- Elevation for CardView. -->
     <attr name="cardElevation" format="dimension" />
     <!-- Maximum Elevation for CardView. -->
