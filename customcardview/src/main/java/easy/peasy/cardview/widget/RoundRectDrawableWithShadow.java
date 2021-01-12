@@ -80,9 +80,9 @@ class RoundRectDrawableWithShadow extends Drawable {
 
   private boolean mDirty = true;
 
-  private final int mShadowStartColor;
+  private int mShadowStartColor;
 
-  private final int mShadowEndColor;
+  private int mShadowEndColor;
 
   /**
    * If shadow size is set to a value above max shadow, we print a warning
@@ -361,6 +361,26 @@ class RoundRectDrawableWithShadow extends Drawable {
     final float calculateMaxShadowSize = (mCornerRadius.getMaxRadius() + mInsetShadow + mRawMaxShadowSize * SHADOW_MULTIPLIER / 2);
     final float content = Math.max(mRawMaxShadowSize, calculateMaxShadowSize);
     return content + (mRawMaxShadowSize * SHADOW_MULTIPLIER + mInsetShadow) * 2;
+  }
+
+  void setShadowStartColor(int color) {
+    mShadowStartColor = color;
+    mDirty = true;
+    invalidateSelf();
+  }
+
+  int getShadowStartColor() {
+    return mShadowStartColor;
+  }
+
+  void setShadowEndColor(int color) {
+    mShadowEndColor = color;
+    mDirty = true;
+    invalidateSelf();
+  }
+
+  int getShadowEndColor() {
+    return mShadowEndColor;
   }
 
   void setColor(@Nullable ColorStateList color) {

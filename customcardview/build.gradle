@@ -9,7 +9,7 @@ ext {
 
   libraryName = "CustomCardView"
   libraryDescription = "Custom CardView design. Specific shadow."
-  libraryVersion = "1.0.3"
+  libraryVersion = "1.0.4"
 
   gitUrl = "https://github.com/dmitriykhalturin/custom-card-view.git"
   siteUrl = "https://github.com/dmitriykhalturin/custom-card-view"

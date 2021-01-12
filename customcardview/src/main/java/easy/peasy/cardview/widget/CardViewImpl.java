@@ -18,6 +18,7 @@ package easy.peasy.cardview.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 
 /**
@@ -43,6 +44,14 @@ interface CardViewImpl {
   void setMaxElevation(CardViewDelegate cardView, float maxElevation);
 
   float getMaxElevation(CardViewDelegate cardView);
+
+  void setShadowStartColor(CardViewDelegate cardView, @ColorInt int color);
+
+  @ColorInt int getShadowStartColor(CardViewDelegate cardView);
+
+  void setShadowEndColor(CardViewDelegate cardView, @ColorInt int color);
+
+  @ColorInt int getShadowEndColor(CardViewDelegate cardView);
 
   float getMinWidth(CardViewDelegate cardView);
 

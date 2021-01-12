@@ -391,6 +391,40 @@ public class CardView extends FrameLayout {
     return cardView.getMaxElevation(mCardViewDelegate);
   }
 
+  /**
+   * Updates the shadow start color of the card view
+   * @param color color int
+   */
+  public void setCardShadowStartColor(@ColorInt int color) {
+    cardView.setShadowStartColor(mCardViewDelegate, color);
+  }
+
+  /**
+   * Returns the shadow start color of the card view
+   * @return color int
+   */
+  @ColorInt
+  public int getCardShadowStartColor() {
+    return cardView.getShadowStartColor(mCardViewDelegate);
+  }
+
+  /**
+   * Updates the shadow end color of the card view
+   * @param color color int
+   */
+  public void setCardShadowEndColor(@ColorInt int color) {
+    cardView.setShadowEndColor(mCardViewDelegate, color);
+  }
+
+  /**
+   * Returns the shadow end color of the card view
+   * @return color int
+   */
+  @ColorInt
+  public int getCardShadowEndColor() {
+    return cardView.getShadowEndColor(mCardViewDelegate);
+  }
+
   private final CardViewDelegate mCardViewDelegate = new CardViewDelegate() {
     private Drawable mCardBackground;
 
