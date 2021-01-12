@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Rect;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 
 class CardViewBaseImpl implements CardViewImpl {
@@ -121,6 +122,28 @@ class CardViewBaseImpl implements CardViewImpl {
   @Override
   public float getMaxElevation(CardViewDelegate cardView) {
     return getShadowBackground(cardView).getMaxShadowSize();
+  }
+
+  @Override
+  public void setShadowStartColor(CardViewDelegate cardView, @ColorInt int color) {
+    getShadowBackground(cardView).setShadowStartColor(color);
+  }
+
+  @Override
+  @ColorInt
+  public int getShadowStartColor(CardViewDelegate cardView) {
+    return getShadowBackground(cardView).getShadowStartColor();
+  }
+
+  @Override
+  public void setShadowEndColor(CardViewDelegate cardView, @ColorInt int color) {
+    getShadowBackground(cardView).setShadowEndColor(color);
+  }
+
+  @Override
+  @ColorInt
+  public int getShadowEndColor(CardViewDelegate cardView) {
+    return getShadowBackground(cardView).getShadowEndColor();
   }
 
   @Override
