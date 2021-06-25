@@ -56,5 +56,7 @@
     <attr name="android:minWidth" />
     <!-- Workaround to read user defined minimum height -->
     <attr name="android:minHeight" />
+    <!-- Ripple color. -->
+    <attr name="rippleColor" format="color" />
   </declare-styleable>
 </resources>

@@ -137,9 +137,12 @@ public class CardView extends FrameLayout {
     mUserSetMinHeight = a.getDimensionPixelSize(R.styleable.CardView_android_minHeight, 0);
     int shadowStartColor = a.getColor(R.styleable.CardView_cardShadowStartColor, 0);
     int shadowEndColor = a.getColor(R.styleable.CardView_cardShadowEndColor, 0);
-    final TypedArray aa = getContext().obtainStyledAttributes(COLOR_RIPPLE_ATTR);
-    final int rippleColor = aa.getColor(0, 0);
-    aa.recycle();
+    int rippleColor = a.getColor(R.styleable.CardView_rippleColor, 0);
+    if (rippleColor == 0) {
+      final TypedArray aa = getContext().obtainStyledAttributes(COLOR_RIPPLE_ATTR);
+      rippleColor = aa.getColor(0, 0);
+      aa.recycle();
+    }
     CardViewDrawable cardViewDrawable = null;
     if (a.hasValue(R.styleable.CardView_cardBackgroundStartColor) && a.hasValue(R.styleable.CardView_cardBackgroundEndColor)){
       int startColor = a.getColor(R.styleable.CardView_cardBackgroundStartColor, 0);
