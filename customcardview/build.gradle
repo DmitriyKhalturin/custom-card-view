@@ -21,12 +21,12 @@ ext {
 }
 
 android {
-  compileSdkVersion 30
-  buildToolsVersion "30.0.3"
+  compileSdk android_target_sdk_version
+  buildToolsVersion "$android_build_tools_version"
 
   defaultConfig {
-    minSdkVersion 21
-    targetSdkVersion 30
+    minSdkVersion android_min_sdk_version
+    targetSdkVersion android_target_sdk_version
 
     consumerProguardFiles "consumer-rules.pro"
   }
@@ -37,11 +37,16 @@ android {
       proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
     }
   }
+
+  packagingOptions {
+    resources {
+      excludes += "/META-INF/{AL2.0,LGPL2.1}"
+    }
+  }
 }
 
 dependencies {
-  api("androidx.annotation:annotation:1.2.0")
-  implementation("androidx.core:core:1.6.0")
+  implementation "androidx.core:core-ktx:$core_ktx_version"
 }
 
 repositories {
