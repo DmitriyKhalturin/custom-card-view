@@ -22,7 +22,6 @@ ext {
 
 android {
   compileSdk android_target_sdk_version
-  buildToolsVersion "$android_build_tools_version"
 
   defaultConfig {
     minSdkVersion android_min_sdk_version
