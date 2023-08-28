@@ -21,6 +21,8 @@ ext {
 }
 
 android {
+  namespace "easy.peasy.cardview"
+
   compileSdk android_target_sdk_version
 
   defaultConfig {
