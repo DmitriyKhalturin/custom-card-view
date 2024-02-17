@@ -108,10 +108,8 @@ public class CardView extends FrameLayout {
   public CardView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr,
-      R.style.CardView);
-    ViewCompat.saveAttributeDataForStyleable(this,
-      context, R.styleable.CardView, attrs, a, defStyleAttr, R.style.CardView);
+    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr, R.style.CardView);
+    ViewCompat.saveAttributeDataForStyleable(this, context, R.styleable.CardView, attrs, a, defStyleAttr, R.style.CardView);
     ColorStateList backgroundColor = ColorStateList.valueOf(ContextCompat.getColor(context, android.R.color.white));
     float radius = a.getDimension(R.styleable.CardView_cardCornerRadius, 0);
     float radiusTopLeft = a.getDimension(R.styleable.CardView_cardCornerRadiusTopLeft, 0);
@@ -122,14 +120,10 @@ public class CardView extends FrameLayout {
     float elevation = a.getDimension(R.styleable.CardView_cardElevation, 0);
     float maxElevation = a.getDimension(R.styleable.CardView_cardMaxElevation, 0);
     int defaultPadding = a.getDimensionPixelSize(R.styleable.CardView_contentPadding, 0);
-    mContentPadding.left = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingLeft,
-      defaultPadding);
-    mContentPadding.top = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingTop,
-      defaultPadding);
-    mContentPadding.right = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingRight,
-      defaultPadding);
-    mContentPadding.bottom = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingBottom,
-      defaultPadding);
+    mContentPadding.left = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingLeft, defaultPadding);
+    mContentPadding.top = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingTop, defaultPadding);
+    mContentPadding.right = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingRight, defaultPadding);
+    mContentPadding.bottom = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingBottom, defaultPadding);
     if (elevation > maxElevation) {
       maxElevation = elevation;
     }
@@ -154,13 +148,10 @@ public class CardView extends FrameLayout {
     }
     a.recycle();
 
-    cardView.initialize(mCardViewDelegate, context, backgroundColor, cornerRadius,
-      elevation, maxElevation, shadowStartColor, shadowEndColor);
+    cardView.initialize(mCardViewDelegate, context, backgroundColor, cornerRadius, elevation, maxElevation, shadowStartColor, shadowEndColor);
 
     View view = new View(context);
-    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-      ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
-    );
+    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     if (cardViewDrawable != null) {
       view.setBackground(cardViewDrawable.getDrawable());
     } else {
@@ -208,8 +199,7 @@ public class CardView extends FrameLayout {
       case MeasureSpec.EXACTLY:
       case MeasureSpec.AT_MOST:
         final int minWidth = (int) Math.ceil(cardView.getMinWidth(mCardViewDelegate));
-        widthMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minWidth,
-          MeasureSpec.getSize(widthMeasureSpec)), widthMode);
+        widthMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minWidth, MeasureSpec.getSize(widthMeasureSpec)), widthMode);
         break;
       case MeasureSpec.UNSPECIFIED:
         // Do nothing
@@ -221,8 +211,7 @@ public class CardView extends FrameLayout {
       case MeasureSpec.EXACTLY:
       case MeasureSpec.AT_MOST:
         final int minHeight = (int) Math.ceil(cardView.getMinHeight(mCardViewDelegate));
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minHeight,
-          MeasureSpec.getSize(heightMeasureSpec)), heightMode);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minHeight, MeasureSpec.getSize(heightMeasureSpec)), heightMode);
         break;
       case MeasureSpec.UNSPECIFIED:
         // Do nothing
@@ -440,8 +429,12 @@ public class CardView extends FrameLayout {
     @Override
     public void setShadowPadding(int left, int top, int right, int bottom) {
       mShadowBounds.set(left, top, right, bottom);
-      CardView.super.setPadding(left + mContentPadding.left, top + mContentPadding.top,
-        right + mContentPadding.right, bottom + mContentPadding.bottom);
+      CardView.super.setPadding(
+        left + mContentPadding.left,
+        top + mContentPadding.top,
+        right + mContentPadding.right,
+        bottom + mContentPadding.bottom
+      );
     }
 
     @Override

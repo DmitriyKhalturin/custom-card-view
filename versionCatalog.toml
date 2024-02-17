@@ -1,0 +1,35 @@
+# https://dev.to/charlietap/gradle-versions-catalog-integration-27l0
+
+[versions]
+
+compileSdk = "34"
+minSdk = "21"
+targetSdk = "34"
+
+versionCode = "1"
+versionName = "1.0.0"
+
+androidCore_version = "1.12.0"
+appcompat_version = "1.6.1"
+activity_version = "1.8.2"
+material_version = "1.11.0"
+constraintlayout_version = "2.1.4"
+
+kotlinGradle_version = "1.9.22"
+androidGradle_version = "8.2.2"
+
+[plugins]
+
+kotlin_android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradle_version" }
+android_application = { id = "com.android.application", version.ref = "androidGradle_version" }
+android_library = { id = "com.android.library", version.ref = "androidGradle_version" }
+
+[libraries]
+
+androidCore = { module = "androidx.core:core-ktx", version.ref = "androidCore_version" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat_version" }
+activity = { module = "androidx.activity:activity-ktx", version.ref = "activity_version" }
+material = { module = "com.google.android.material:material", version.ref = "material_version" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout_version" }
+
+[bundles]

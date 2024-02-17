@@ -1,5 +1,4 @@
 # Custom CardView
-[ ![Download](https://api.bintray.com/packages/dmitriykhalturin/easypeasy/customcardview/images/download.svg) ](https://bintray.com/dmitriykhalturin/easypeasy/customcardview/_latestVersion)
 
 <img src='images/example.png' height='500px'/>
 
