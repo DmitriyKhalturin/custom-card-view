@@ -45,41 +45,27 @@ class CardViewBaseImpl implements CardViewImpl {
   }
 
   @Override
-  public void initialize(CardViewDelegate cardView, Context context,
-                         ColorStateList backgroundColor,
-                         CornerRadius cornerRadius,
-                         float elevation, float maxElevation,
-                         int shadowStartColor, int shadowEndColor) {
-    RoundRectDrawableWithShadow background = createBackground(context,
-      backgroundColor,
-      cornerRadius,
-      elevation, maxElevation,
-      shadowStartColor, shadowEndColor);
+  public void initialize(CardViewDelegate cardView, Context context, ColorStateList backgroundColor, CornerRadius cornerRadius, float elevation, float maxElevation, int shadowStartColor, int shadowEndColor) {
+    RoundRectDrawableWithShadow background = new RoundRectDrawableWithShadow(context.getResources(), backgroundColor, cornerRadius, elevation, maxElevation, shadowStartColor, shadowEndColor);
     background.setAddPaddingForCorners();
     cardView.setCardBackground(background);
     updatePadding(cardView);
-  }
-
-  private RoundRectDrawableWithShadow createBackground(Context context,
-                                                       ColorStateList backgroundColor,
-                                                       CornerRadius cornerRadius,
-                                                       float elevation, float maxElevation,
-                                                       int shadowStartColor, int shadowEndColor) {
-    return new RoundRectDrawableWithShadow(context.getResources(),
-      backgroundColor,
-      cornerRadius,
-      elevation, maxElevation,
-      shadowStartColor, shadowEndColor);
   }
 
   @Override
   public void updatePadding(CardViewDelegate cardView) {
     Rect shadowPadding = new Rect();
     getShadowBackground(cardView).getMaxShadowAndCornerPadding(shadowPadding);
-    cardView.setMinWidthHeightInternal((int) Math.ceil(getMinWidth(cardView)),
-      (int) Math.ceil(getMinHeight(cardView)));
-    cardView.setShadowPadding(shadowPadding.left, shadowPadding.top,
-      shadowPadding.right, shadowPadding.bottom);
+    cardView.setMinWidthHeightInternal(
+      (int) Math.ceil(getMinWidth(cardView)),
+      (int) Math.ceil(getMinHeight(cardView))
+    );
+    cardView.setShadowPadding(
+      shadowPadding.left,
+      shadowPadding.top,
+      shadowPadding.right,
+      shadowPadding.bottom
+    );
   }
 
   @Override

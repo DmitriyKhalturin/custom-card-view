@@ -25,11 +25,8 @@ import androidx.annotation.Nullable;
  * Interface for platform specific CardView implementations.
  */
 interface CardViewImpl {
-  void initialize(CardViewDelegate cardView, Context context,
-                  ColorStateList backgroundColor,
-                  CornerRadius cornerRadius,
-                  float elevation, float maxElevation,
-                  int shadowStartColor, int shadowEndColor);
+
+  void initialize(CardViewDelegate cardView, Context context, ColorStateList backgroundColor, CornerRadius cornerRadius, float elevation, float maxElevation, int shadowStartColor, int shadowEndColor);
 
   void setCornerRadii(CardViewDelegate cardView, float[] radii);
 
@@ -47,11 +44,13 @@ interface CardViewImpl {
 
   void setShadowStartColor(CardViewDelegate cardView, @ColorInt int color);
 
-  @ColorInt int getShadowStartColor(CardViewDelegate cardView);
+  @ColorInt
+  int getShadowStartColor(CardViewDelegate cardView);
 
   void setShadowEndColor(CardViewDelegate cardView, @ColorInt int color);
 
-  @ColorInt int getShadowEndColor(CardViewDelegate cardView);
+  @ColorInt
+  int getShadowEndColor(CardViewDelegate cardView);
 
   float getMinWidth(CardViewDelegate cardView);
 

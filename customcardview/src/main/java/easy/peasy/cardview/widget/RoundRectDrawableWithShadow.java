@@ -31,7 +31,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Nullable;
-
 import easy.peasy.cardview.R;
 
 /**
@@ -89,10 +88,7 @@ class RoundRectDrawableWithShadow extends Drawable {
    */
   private boolean mPrintedShadowClipWarning = false;
 
-  RoundRectDrawableWithShadow(Resources resources,
-                              ColorStateList backgroundColor,
-                              CornerRadius cornerRadius,
-                              float shadowSize, float maxShadowSize, int shadowStartColor, int shadowEndColor) {
+  RoundRectDrawableWithShadow(Resources resources, ColorStateList backgroundColor, CornerRadius cornerRadius, float shadowSize, float maxShadowSize, int shadowStartColor, int shadowEndColor) {
     if (shadowStartColor != 0) {
       mShadowStartColor = shadowStartColor;
     } else {
@@ -117,7 +113,7 @@ class RoundRectDrawableWithShadow extends Drawable {
   }
 
   private void setBackground(ColorStateList color) {
-    mBackground = (color == null) ?  ColorStateList.valueOf(Color.TRANSPARENT) : color;
+    mBackground = (color == null) ? ColorStateList.valueOf(Color.TRANSPARENT) : color;
     mPaint.setColor(mBackground.getColorForState(getState(), mBackground.getDefaultColor()));
   }
 
@@ -151,12 +147,10 @@ class RoundRectDrawableWithShadow extends Drawable {
 
   private void setShadowSize(float shadowSize, float maxShadowSize) {
     if (shadowSize < 0f) {
-      throw new IllegalArgumentException("Invalid shadow size " + shadowSize
-        + ". Must be >= 0");
+      throw new IllegalArgumentException("Invalid shadow size " + shadowSize + ". Must be >= 0");
     }
     if (maxShadowSize < 0f) {
-      throw new IllegalArgumentException("Invalid max shadow size " + maxShadowSize
-        + ". Must be >= 0");
+      throw new IllegalArgumentException("Invalid max shadow size " + maxShadowSize + ". Must be >= 0");
     }
     shadowSize = toEven(shadowSize);
     maxShadowSize = toEven(maxShadowSize);
@@ -257,7 +251,7 @@ class RoundRectDrawableWithShadow extends Drawable {
   private void drawShadow(Canvas canvas) {
     final float edgeShadowTop = -mCornerRadius.getMaxRadius() - mShadowSize;
     final float inset = mCornerRadius.getMaxRadius() + mInsetShadow + mRawShadowSize / 2;
-    final boolean drawHorizontalEdges = - 2 * SHADOW_OFFSET + mCardBounds.width() - 2 * inset > 0;
+    final boolean drawHorizontalEdges = -2 * SHADOW_OFFSET + mCardBounds.width() - 2 * inset > 0;
     // RB
     int saved = canvas.save();
     canvas.translate(-SHADOW_OFFSET + mCardBounds.right - inset, mCardBounds.bottom - inset);
@@ -265,13 +259,7 @@ class RoundRectDrawableWithShadow extends Drawable {
     canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
     // B
     if (drawHorizontalEdges) {
-      canvas.drawRect(
-        0,
-        edgeShadowTop,
-        - 2 * SHADOW_OFFSET + mCardBounds.width() - 2 * inset,
-        -mCornerRadius.getMaxRadius() + mShadowSize,
-        mEdgeShadowPaint
-      );
+      canvas.drawRect(0, edgeShadowTop, -2 * SHADOW_OFFSET + mCardBounds.width() - 2 * inset, -mCornerRadius.getMaxRadius() + mShadowSize, mEdgeShadowPaint);
     }
     canvas.restoreToCount(saved);
     // LB
@@ -301,19 +289,12 @@ class RoundRectDrawableWithShadow extends Drawable {
     mCornerShadowPath.arcTo(innerBounds, 270f, -90f, false);
     mCornerShadowPath.close();
     float startRatio = mCornerRadius.getMaxRadius() / (mCornerRadius.getMaxRadius() + mShadowSize);
-    mCornerShadowPaint.setShader(new RadialGradient(0, 0, mCornerRadius.getMaxRadius() + mShadowSize,
-      new int[]{mShadowStartColor, mShadowStartColor, mShadowEndColor},
-      new float[]{0f, startRatio, 1f},
-      Shader.TileMode.CLAMP));
+    mCornerShadowPaint.setShader(new RadialGradient(0, 0, mCornerRadius.getMaxRadius() + mShadowSize, new int[]{mShadowStartColor, mShadowStartColor, mShadowEndColor}, new float[]{0f, startRatio, 1f}, Shader.TileMode.CLAMP));
 
     // we offset the content shadowSize/2 pixels up to make it more realistic.
     // this is why edge shadow shader has some extra space
     // When drawing bottom edge shadow, we use that extra space.
-    mEdgeShadowPaint.setShader(new LinearGradient(0, -mCornerRadius.getMaxRadius() + mShadowSize,
-      0, -mCornerRadius.getMaxRadius() - mShadowSize,
-      new int[]{mShadowStartColor, mShadowStartColor, mShadowEndColor},
-      new float[]{0f, .5f, 1f},
-      Shader.TileMode.CLAMP));
+    mEdgeShadowPaint.setShader(new LinearGradient(0, -mCornerRadius.getMaxRadius() + mShadowSize, 0, -mCornerRadius.getMaxRadius() - mShadowSize, new int[]{mShadowStartColor, mShadowStartColor, mShadowEndColor}, new float[]{0f, .5f, 1f}, Shader.TileMode.CLAMP));
     mEdgeShadowPaint.setAntiAlias(false);
   }
 
@@ -322,8 +303,7 @@ class RoundRectDrawableWithShadow extends Drawable {
     // We could have different top-bottom offsets to avoid extra gap above but in that case
     // center aligning Views inside the CardView would be problematic.
     final float verticalOffset = mRawMaxShadowSize * SHADOW_MULTIPLIER;
-    mCardBounds.set(bounds.left + mRawMaxShadowSize, bounds.top + verticalOffset,
-      bounds.right - mRawMaxShadowSize, bounds.bottom - verticalOffset);
+    mCardBounds.set(bounds.left + mRawMaxShadowSize, bounds.top + verticalOffset, bounds.right - mRawMaxShadowSize, bounds.bottom - verticalOffset);
     buildShadowCorners();
   }
 

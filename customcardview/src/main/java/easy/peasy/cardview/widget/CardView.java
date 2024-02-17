@@ -20,10 +20,11 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
@@ -96,7 +97,7 @@ public class CardView extends FrameLayout {
 
   final Rect mShadowBounds = new Rect();
 
-  private View backgroundView;
+  private final View backgroundView;
 
   public CardView(@NonNull Context context) {
     this(context, null);
@@ -155,10 +156,15 @@ public class CardView extends FrameLayout {
     if (cardViewDrawable != null) {
       backgroundView.setBackground(cardViewDrawable.getDrawable());
     } else {
-      backgroundView.setBackgroundResource(android.R.color.white);
+      backgroundView.setBackground(
+        new RippleDrawable(
+          ColorStateList.valueOf(rippleColor),
+          new ColorDrawable(getResources().getColor(android.R.color.white)),
+          null
+        )
+      );
     }
-    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-    addView(backgroundView, params);
+    addView(backgroundView);
   }
 
   @Override
@@ -218,7 +224,13 @@ public class CardView extends FrameLayout {
     final int measuredHeight = resolveSize(contentHeight, heightMeasureSpec);
 
     setMeasuredDimension(measuredWidth, measuredHeight);
-    backgroundView.measure(widthMeasureSpec, heightMeasureSpec);
+
+    int backgroundWidth = measuredWidth - mShadowBounds.left - mShadowBounds.right;
+    int backgroundHeight = measuredHeight - mShadowBounds.top - mShadowBounds.bottom;
+    int backgroundWidthMeasureSpec = MeasureSpec.makeMeasureSpec(backgroundWidth, MeasureSpec.EXACTLY);
+    int backgroundHeightMeasureSpec = MeasureSpec.makeMeasureSpec(backgroundHeight, MeasureSpec.EXACTLY);
+
+    backgroundView.measure(backgroundWidthMeasureSpec, backgroundHeightMeasureSpec);
   }
 
   @Override
@@ -418,6 +430,7 @@ public class CardView extends FrameLayout {
   }
 
   private final CardViewDelegate mCardViewDelegate = new CardViewDelegate() {
+
     private Drawable mCardBackground;
 
     @Override
