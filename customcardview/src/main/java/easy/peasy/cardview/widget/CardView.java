@@ -32,7 +32,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
-
 import easy.peasy.cardview.R;
 
 /**
@@ -97,6 +96,8 @@ public class CardView extends FrameLayout {
 
   final Rect mShadowBounds = new Rect();
 
+  private View backgroundView;
+
   public CardView(@NonNull Context context) {
     this(context, null);
   }
@@ -150,15 +151,14 @@ public class CardView extends FrameLayout {
 
     cardView.initialize(mCardViewDelegate, context, backgroundColor, cornerRadius, elevation, maxElevation, shadowStartColor, shadowEndColor);
 
-    View view = new View(context);
-    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    backgroundView = new View(context);
     if (cardViewDrawable != null) {
-      view.setBackground(cardViewDrawable.getDrawable());
+      backgroundView.setBackground(cardViewDrawable.getDrawable());
     } else {
-      view.setBackgroundResource(android.R.color.white);
+      backgroundView.setBackgroundResource(android.R.color.white);
     }
-    addView(view, params);
-    view.requestLayout();
+    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    addView(backgroundView, params);
   }
 
   @Override
@@ -195,30 +195,30 @@ public class CardView extends FrameLayout {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-    switch (widthMode) {
-      case MeasureSpec.EXACTLY:
-      case MeasureSpec.AT_MOST:
-        final int minWidth = (int) Math.ceil(cardView.getMinWidth(mCardViewDelegate));
-        widthMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minWidth, MeasureSpec.getSize(widthMeasureSpec)), widthMode);
-        break;
-      case MeasureSpec.UNSPECIFIED:
-        // Do nothing
-        break;
+    int contentWidth = (int) Math.ceil(cardView.getMinWidth(mCardViewDelegate));
+    int contentHeight = (int) Math.ceil(cardView.getMinHeight(mCardViewDelegate));
+
+    if (widthMode == MeasureSpec.EXACTLY) {
+      contentWidth = Math.max(contentWidth, MeasureSpec.getSize(widthMeasureSpec));
+      contentHeight = Math.max(contentHeight, MeasureSpec.getSize(heightMeasureSpec));
+    } else {
+      for (int i = 0; i < getChildCount(); i++) {
+        View childView = getChildAt(i);
+
+        if (childView == backgroundView) continue;
+
+        childView.measure(widthMeasureSpec, heightMeasureSpec);
+
+        contentWidth = Math.max(contentWidth, childView.getMeasuredWidth());
+        contentHeight = Math.max(contentHeight, childView.getMeasuredHeight());
+      }
     }
 
-    final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-    switch (heightMode) {
-      case MeasureSpec.EXACTLY:
-      case MeasureSpec.AT_MOST:
-        final int minHeight = (int) Math.ceil(cardView.getMinHeight(mCardViewDelegate));
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(minHeight, MeasureSpec.getSize(heightMeasureSpec)), heightMode);
-        break;
-      case MeasureSpec.UNSPECIFIED:
-        // Do nothing
-        break;
-    }
+    final int measuredWidth = resolveSize(contentWidth, widthMeasureSpec);
+    final int measuredHeight = resolveSize(contentHeight, heightMeasureSpec);
 
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    setMeasuredDimension(measuredWidth, measuredHeight);
+    backgroundView.measure(widthMeasureSpec, heightMeasureSpec);
   }
 
   @Override
